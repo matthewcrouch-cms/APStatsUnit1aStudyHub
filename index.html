@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study Hub: Unit 1a</title>
+<style>
+:root{
+  --blue:#4B9CD3; --blue-d:#2A6F9E; --blue-l:#E8F3FB;
+  --orange:#F56600; --orange-d:#C24F00; --orange-l:#FFF1E6;
+  --navy:#13294B; --ink:#1d2533; --muted:#5b6678;
+  --bg:#f4f7fb; --card:#ffffff; --line:#d9e2ec;
+  --good:#1f8a4c; --good-l:#e4f5eb; --bad:#c0392b; --bad-l:#fbe9e7;
+  --g0:#4B9CD3; --g1:#F56600; --g2:#13294B; --g3:#9aa6b6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --navy:#cfe4f6; --ink:#e7ecf3; --muted:#a6b0bf; --bg:#0f1620; --card:#18212e; --line:#2b3748;
+    --blue-l:#16324a; --orange-l:#3a2415; --good-l:#163526; --bad-l:#3b1d1b; --g2:#cfe4f6; --g3:#6b788a;
+  }
+}
+:root[data-theme="dark"]{
+  --navy:#cfe4f6; --ink:#e7ecf3; --muted:#a6b0bf; --bg:#0f1620; --card:#18212e; --line:#2b3748;
+  --blue-l:#16324a; --orange-l:#3a2415; --good-l:#163526; --bad-l:#3b1d1b; --g2:#cfe4f6; --g3:#6b788a;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:16px}
+.xb{text-decoration:overline}
+header{background:linear-gradient(120deg,#13294B 0%,#1d3d6b 55%,#2A6F9E 100%);color:#fff;padding:22px 16px 18px}
+.wrap{max-width:1150px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#cfe4f6;font-weight:600}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--orange)}
+h1{margin:6px 0 4px;font-size:clamp(26px,4vw,36px);line-height:1.15}
+.sub{color:#dbe9f5;margin:0;font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);padding:2px 10px;border-radius:999px;font-size:12.5px}
+.overall{margin-top:14px;display:flex;align-items:center;gap:12px;font-size:13.5px;color:#dbe9f5}
+.bar{flex:1;max-width:340px;height:9px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--orange);width:0;transition:width .4s}
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;padding:0 12px}
+nav.tabs button{flex:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:600;padding:13px 14px;border-bottom:3px solid transparent;cursor:pointer}
+nav.tabs button[aria-selected="true"]{color:var(--navy);border-bottom-color:var(--orange)}
+main{padding:20px 16px 60px}
+.view{display:none}.view.on{display:block}
+.layout{display:grid;grid-template-columns:270px 1fr;gap:20px;align-items:start}
+aside{position:sticky;top:62px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px}
+.topic{display:block;width:100%;text-align:left;border:0;background:none;font:inherit;color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer}
+.topic:hover{background:var(--blue-l)}
+.topic[aria-current="true"]{background:var(--blue-l);box-shadow:inset 3px 0 0 var(--blue)}
+.topic .t{font-weight:600;font-size:14.5px;display:block}
+.topic .m{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-top:3px}
+.mini{flex:1;height:5px;background:var(--line);border-radius:9px;overflow:hidden}
+.mini>i{display:block;height:100%;background:var(--blue);width:0}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.panel h2{margin:0 0 4px;color:var(--navy);font-size:24px;line-height:1.2}
+.ced{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+.subtabs{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;margin-bottom:18px}
+.subtabs button{border:0;background:none;font:inherit;font-weight:600;font-size:14px;padding:7px 14px;border-radius:8px;color:var(--muted);cursor:pointer}
+.subtabs button[aria-selected="true"]{background:var(--card);color:var(--navy);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.review h3{color:var(--navy);font-size:17px;margin:20px 0 6px}
+.review ul{margin:6px 0;padding-left:20px}.review li{margin:4px 0}
+.vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:8px 0}
+.vocab div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg)}
+.vocab b{display:block;color:var(--blue-d)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .vocab b{color:#8cc4ea}}
+.callout{border-radius:12px;padding:12px 14px;margin:14px 0;font-size:15px}
+.callout.tip{background:var(--blue-l);border-left:4px solid var(--blue)}
+.callout.warn{background:var(--orange-l);border-left:4px solid var(--orange)}
+.callout strong:first-child{display:block;margin-bottom:2px}
+.formula{font-family:"Cambria Math",Cambria,Georgia,serif;font-size:17px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;display:inline-block;margin:4px 0}
+.q{border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 16px;background:var(--card)}
+.q .qh{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.q .tag{color:var(--orange-d)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .q .tag{color:#ff9a57}}
+.q p.stem{margin:0 0 10px}
+.opts{display:grid;gap:8px;margin-top:10px}
+.opt{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;padding:10px 12px;border-radius:10px;cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--blue)}
+.opt .L{flex:none;width:24px;height:24px;border-radius:50%;background:var(--bg);border:1px solid var(--line);display:grid;place-items:center;font-weight:700;font-size:13px}
+.opt.right{border-color:var(--good);background:var(--good-l)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-l)}
+.opt[disabled]{cursor:default}
+.fb{margin-top:10px;border-radius:10px;padding:10px 12px;font-size:15px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--good-l);border-left:4px solid var(--good)}
+.fb.no{background:var(--bad-l);border-left:4px solid var(--bad)}
+.btn{border:1.5px solid var(--blue);background:var(--card);color:var(--blue-d);font:inherit;font-weight:600;font-size:14px;padding:7px 14px;border-radius:9px;cursor:pointer}
+.btn.solid{background:var(--orange);border-color:var(--orange);color:#fff}
+.btn.solid:hover{background:var(--orange-d)}
+.btn:hover{filter:brightness(.97)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .btn:not(.solid){color:#8cc4ea}}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+textarea{width:100%;min-height:110px;border:1.5px solid var(--line);border-radius:10px;padding:10px;font:inherit;background:var(--bg);color:var(--ink);resize:vertical}
+textarea:focus,input:focus{outline:2px solid var(--blue);outline-offset:1px}
+.model{display:none;margin-top:12px;border:1px dashed var(--blue);border-radius:12px;padding:12px 14px;background:var(--blue-l)}
+.model.show{display:block}
+.model h4{margin:0 0 6px;color:var(--navy)}
+.check label{display:flex;gap:8px;align-items:flex-start;margin:4px 0;font-size:15px}
+figure{margin:10px 0;overflow-x:auto}
+svg.fig{width:100%;max-width:640px;height:auto;display:block}
+svg .ax{stroke:var(--ink);stroke-width:1.2}
+svg .faint{stroke:var(--line)}
+svg .tk{fill:var(--muted);font-size:12px}
+svg .lab{fill:var(--ink);font-size:13px;font-weight:600}
+svg .dot{stroke:none}
+svg .d0{fill:var(--g0)} svg .d1{fill:var(--g1)}
+svg .box{fill:var(--blue-l);stroke:var(--ink);stroke-width:1.4}
+svg .wh{stroke:var(--ink);stroke-width:1.4}
+svg .med{stroke:var(--orange);stroke-width:3}
+table.tw{border-collapse:collapse;margin:8px 0;font-size:15px;min-width:320px}
+table.tw th,table.tw td{border:1px solid var(--line);padding:6px 12px;text-align:center}
+table.tw thead th{background:var(--blue-l)}
+table.tw tbody th{background:var(--bg);text-align:left}
+table.tw .tot{font-weight:700;background:var(--bg)}
+.leafplot{font-family:Consolas,Menlo,monospace;font-size:16px;display:inline-block;border:1px solid var(--line);border-radius:10px;padding:10px 16px;background:var(--bg)}
+.srow{display:flex}.srow .st{width:28px;text-align:right;padding-right:8px;border-right:2px solid var(--ink);margin-right:8px}
+.key{font-family:inherit;font-size:13px;color:var(--muted);margin-top:6px}
+.scorebox{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--blue-l);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+.scorebox .big{font-size:26px;font-weight:800;color:var(--navy)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.out table{border-collapse:collapse;width:100%;font-size:15px}
+.out td{padding:6px 8px;border-bottom:1px solid var(--line)}
+.out td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+input[type=number]{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:8px;font:inherit;background:var(--bg);color:var(--ink)}
+.field label{display:block;font-size:13.5px;font-weight:600;margin:8px 0 3px}
+.ref{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.ref .panel h3{margin:0 0 8px;color:var(--navy);font-size:18px}
+.ref ul{padding-left:20px;margin:6px 0}
+.mobile-pick{display:none;margin-bottom:12px}
+.mobile-pick select{width:100%;font:inherit;padding:10px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--ink)}
+.foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px}
+.err{color:var(--bad);font-size:14px;margin-top:6px}
+@media (max-width:860px){
+  .layout{grid-template-columns:1fr}
+  aside{display:none}
+  .mobile-pick{display:block}
+  .grid2{grid-template-columns:1fr}
+  .panel{padding:16px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Ballantyne Ridge Wolves · AP Statistics</div>
+    <h1>Study Hub: Unit 1a</h1>
+    <p class="sub">Exploring One-Variable Data &amp; Two Categorical Variables</p>
+    <div class="chips">
+      <span class="chip">CED 1.1–1.10</span><span class="chip">CED 2.1–2.2</span><span class="chip">Concept review</span><span class="chip">Practice with feedback</span>
+    </div>
+    <div class="overall"><span id="ovText">0 of 0 practice questions correct</span><div class="bar"><i id="ovBar"></i></div></div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Hub sections">
+  <div class="wrap" role="tablist">
+    <button role="tab" aria-selected="true" data-view="topics">Study by Topic</button>
+    <button role="tab" aria-selected="false" data-view="mixed">Mixed Practice</button>
+    <button role="tab" aria-selected="false" data-view="calc">Stats Calculator</button>
+    <button role="tab" aria-selected="false" data-view="ref">Quick Reference</button>
+  </div>
+</nav>
+
+<main>
+<div class="wrap">
+
+  <section class="view on" id="v-topics">
+    <div class="mobile-pick"><label for="pick" class="sr" style="font-weight:600;font-size:14px">Topic</label><select id="pick"></select></div>
+    <div class="layout">
+      <aside id="topicList" aria-label="Topics"></aside>
+      <div class="panel" id="topicPanel"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-mixed">
+    <div class="panel">
+      <h2>Mixed Practice</h2>
+      <p class="ced">10 random questions pulled from every topic in Unit 1a. Great for a final check before the assessment.</p>
+      <div class="scorebox"><span class="big" id="mxScore">0 / 10</span><span id="mxMsg">Answer each question — you get instant feedback.</span><span style="flex:1"></span><button class="btn solid" id="mxNew">New set of 10</button></div>
+      <div id="mxList"></div>
+    </div>
+  </section>
+
+  <section class="view" id="v-calc">
+    <div class="grid2">
+      <div class="panel">
+        <h2>Summary Statistics Calculator</h2>
+        <p class="ced">Paste or type data separated by commas, spaces, or new lines. Use it to <em>check</em> your hand calculations.</p>
+        <textarea id="cIn" aria-label="Data values">3, 5, 6, 8, 9, 12, 15, 30</textarea>
+        <div class="row"><button class="btn solid" id="cGo">Calculate</button><button class="btn" id="cClear">Clear</button></div>
+        <div class="err" id="cErr"></div>
+        <div class="out" id="cOut"></div>
+      </div>
+      <div class="panel">
+        <h2>Graphs of Your Data</h2>
+        <p class="ced">Boxplot uses the 1.5 × IQR rule for outliers (marked ✱). Quartiles are found the same way as the TI-84 (median excluded from each half when n is odd).</p>
+        <figure id="cBox"></figure>
+        <figure id="cDot"></figure>
+        <h2 style="font-size:20px;margin-top:18px">z-Score Calculator</h2>
+        <div class="grid2" style="gap:10px">
+          <div class="field"><label for="zx">Data value (x)</label><input type="number" id="zx" value="87" step="any"></div>
+          <div class="field"><label for="zm">Mean (μ or <span class="xb">x</span>)</label><input type="number" id="zm" value="75" step="any"></div>
+          <div class="field"><label for="zs">Standard deviation (σ or s)</label><input type="number" id="zs" value="6" step="any"></div>
+          <div class="field"><label>&nbsp;</label><button class="btn solid" id="zGo" style="width:100%">Find z</button></div>
+        </div>
+        <p id="zOut" class="callout tip" style="display:none"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="v-ref">
+    <div class="ref" id="refGrid"></div>
+  </section>
+
+  <p class="foot">Aligned to the AP Statistics Course and Exam Description (effective Fall 2026), Topics 1.1–1.10 and 2.1–2.2. Your progress is saved in this browser only.</p>
+</div>
+</main>
+
+<script>
+/* ===================== GRAPH HELPERS ===================== */
+const fmt = v => (Math.round(v*1000)/1000).toString();
+function axis(x, min, max, tick, y, padL, W, padR, label){
+  let s = `<line x1="${padL}" x2="${W-padR}" y1="${y}" y2="${y}" class="ax"/>`;
+  for(let t=min; t<=max+1e-9; t+=tick){
+    const tt = Math.round(t*1000)/1000;
+    s += `<line x1="${x(tt)}" x2="${x(tt)}" y1="${y}" y2="${y+5}" class="ax"/><text x="${x(tt)}" y="${y+18}" class="tk" text-anchor="middle">${tt}</text>`;
+  }
+  s += `<text x="${(padL+W-padR)/2}" y="${y+35}" class="lab" text-anchor="middle">${label}</text>`;
+  return s;
+}
+function dotplot(o){
+  const multi = o.groups.length>1, W=620, padL=multi?96:24, padR=20, r=5.5, gap=12.5, step=o.step||1;
+  const panels = o.groups.map(g=>{const c={}; g.data.forEach(v=>{const k=Math.round(v/step)*step; c[k]=(c[k]||0)+1;}); return c;});
+  const maxStack = Math.max(...panels.map(c=>Math.max(...Object.values(c))));
+  const panelH = maxStack*gap+18, H = panels.length*panelH+48;
+  const x = v => padL+(v-o.min)/(o.max-o.min)*(W-padL-padR);
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="${o.aria||'Dotplot'}">`;
+  panels.forEach((c,i)=>{
+    const base=(i+1)*panelH;
+    if(multi){ s+=`<text x="4" y="${base-6}" class="lab">${o.groups[i].name}</text><line x1="${padL}" x2="${W-padR}" y1="${base}" y2="${base}" class="ax faint"/>`; }
+    for(const k in c){ for(let j=0;j<c[k];j++){ s+=`<circle cx="${x(+k)}" cy="${base-r-2-j*gap}" r="${r}" class="dot d${i%2}"/>`; } }
+  });
+  s += axis(x,o.min,o.max,o.tick,panels.length*panelH+2,padL,W,padR,o.label);
+  return s+`</svg>`;
+}
+function boxplot(o){
+  const multi=o.groups.length>1, W=620, padL=multi?96:24, padR=20, rowH=58, H=o.groups.length*rowH+50;
+  const x = v => padL+(v-o.min)/(o.max-o.min)*(W-padL-padR);
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="${o.aria||'Boxplot'}">`;
+  o.groups.forEach((g,i)=>{
+    const cy=i*rowH+rowH/2+4, [mn,q1,md,q3,mx]=g.five, h=26;
+    if(multi) s+=`<text x="4" y="${cy+5}" class="lab">${g.name}</text>`;
+    s+=`<line x1="${x(mn)}" x2="${x(q1)}" y1="${cy}" y2="${cy}" class="wh"/><line x1="${x(q3)}" x2="${x(mx)}" y1="${cy}" y2="${cy}" class="wh"/>`;
+    s+=`<line x1="${x(mn)}" x2="${x(mn)}" y1="${cy-8}" y2="${cy+8}" class="wh"/><line x1="${x(mx)}" x2="${x(mx)}" y1="${cy-8}" y2="${cy+8}" class="wh"/>`;
+    s+=`<rect x="${x(q1)}" y="${cy-h/2}" width="${Math.max(1,x(q3)-x(q1))}" height="${h}" class="box"/>`;
+    s+=`<line x1="${x(md)}" x2="${x(md)}" y1="${cy-h/2}" y2="${cy+h/2}" class="med"/>`;
+    (g.out||[]).forEach(v=>{ s+=`<text x="${x(v)}" y="${cy+6}" text-anchor="middle" style="fill:var(--orange);font-size:18px;font-weight:700">✱</text>`; });
+  });
+  s += axis(x,o.min,o.max,o.tick,o.groups.length*rowH+4,padL,W,padR,o.label);
+  return s+`</svg>`;
+}
+function histogram(o){
+  const W=620, padL=52, padR=20, padT=12, ph=200, H=ph+padT+52;
+  const lo=o.bins[0].lo, hi=o.bins[o.bins.length-1].hi;
+  const x=v=>padL+(v-lo)/(hi-lo)*(W-padL-padR), y=c=>padT+ph-c/o.ymax*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="${o.aria||'Histogram'}">`;
+  for(let t=0;t<=o.ymax;t+=o.ytick){ s+=`<line x1="${padL}" x2="${W-padR}" y1="${y(t)}" y2="${y(t)}" class="ax faint"/><text x="${padL-8}" y="${y(t)+4}" class="tk" text-anchor="end">${t}</text>`; }
+  o.bins.forEach(b=>{ s+=`<rect x="${x(b.lo)}" y="${y(b.c)}" width="${x(b.hi)-x(b.lo)}" height="${y(0)-y(b.c)}" style="fill:var(--blue);stroke:var(--card);stroke-width:1.5"/>`; });
+  s+=`<line x1="${padL}" x2="${padL}" y1="${padT}" y2="${y(0)}" class="ax"/>`;
+  s+=axis(x,lo,hi,o.xtick,y(0),padL,W,padR,o.label);
+  s+=`<text transform="translate(14 ${padT+ph/2}) rotate(-90)" class="lab" text-anchor="middle">${o.ylabel}</text>`;
+  return s+`</svg>`;
+}
+function barChart(o){
+  const W=620, padL=52, padR=20, padT=12, ph=200, H=ph+padT+56, n=o.cats.length;
+  const band=(W-padL-padR)/n, y=c=>padT+ph-c/o.ymax*ph;
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="${o.aria||'Bar chart'}">`;
+  for(let t=0;t<=o.ymax;t+=o.ytick){ s+=`<line x1="${padL}" x2="${W-padR}" y1="${y(t)}" y2="${y(t)}" class="ax faint"/><text x="${padL-8}" y="${y(t)+4}" class="tk" text-anchor="end">${t}</text>`; }
+  o.cats.forEach((c,i)=>{ const bx=padL+i*band+band*.2; s+=`<rect x="${bx}" y="${y(o.vals[i])}" width="${band*.6}" height="${y(0)-y(o.vals[i])}" rx="3" style="fill:var(--blue)"/><text x="${bx+band*.3}" y="${y(0)+18}" class="tk" text-anchor="middle">${c}</text>`; });
+  s+=`<line x1="${padL}" x2="${W-padR}" y1="${y(0)}" y2="${y(0)}" class="ax"/><line x1="${padL}" x2="${padL}" y1="${padT}" y2="${y(0)}" class="ax"/>`;
+  s+=`<text x="${(padL+W-padR)/2}" y="${y(0)+40}" class="lab" text-anchor="middle">${o.xlabel}</text>`;
+  s+=`<text transform="translate(14 ${padT+ph/2}) rotate(-90)" class="lab" text-anchor="middle">${o.ylabel}</text>`;
+  return s+`</svg>`;
+}
+function segBar(o){
+  const W=620, padL=52, padT=12, ph=210, H=ph+padT+50, cols=['var(--g0)','var(--g1)','var(--g2)','var(--g3)'];
+  const y=p=>padT+ph-p*ph, bw=110;
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="fig" role="img" aria-label="${o.aria||'Segmented bar chart'}">`;
+  for(let t=0;t<=1.0001;t+=0.2){ s+=`<text x="${padL-8}" y="${y(t)+4}" class="tk" text-anchor="end">${t.toFixed(1)}</text><line x1="${padL}" x2="${padL+330}" y1="${y(t)}" y2="${y(t)}" class="ax faint"/>`; }
+  o.groups.forEach((g,i)=>{
+    const tot=g.vals.reduce((a,b)=>a+b,0), bx=padL+40+i*(bw+50); let acc=0;
+    g.vals.forEach((v,j)=>{ const p=v/tot; s+=`<rect x="${bx}" y="${y(acc+p)}" width="${bw}" height="${y(acc)-y(acc+p)}" style="fill:${cols[j]};stroke:var(--card);stroke-width:1.5"/><text x="${bx+bw/2}" y="${(y(acc)+y(acc+p))/2+4}" text-anchor="middle" style="fill:#fff;font-size:12.5px;font-weight:700">${p.toFixed(2)}</text>`; acc+=p; });
+    s+=`<text x="${bx+bw/2}" y="${y(0)+18}" class="tk" text-anchor="middle">${g.name}</text>`;
+  });
+  s+=`<line x1="${padL}" x2="${padL}" y1="${padT}" y2="${y(0)}" class="ax"/><line x1="${padL}" x2="${padL+330}" y1="${y(0)}" y2="${y(0)}" class="ax"/>`;
+  s+=`<text transform="translate(14 ${padT+ph/2}) rotate(-90)" class="lab" text-anchor="middle">Proportion</text>`;
+  o.cats.forEach((c,j)=>{ const ly=padT+20+j*26; s+=`<rect x="${padL+360}" y="${ly-11}" width="14" height="14" style="fill:${cols[j]}"/><text x="${padL+382}" y="${ly}" class="tk" style="font-size:13px">${c}</text>`; });
+  s+=`<text x="${padL+360}" y="${padT+6}" class="lab" style="font-size:12px">${o.legendTitle||''}</text>`;
+  return s+`</svg>`;
+}
+function twoWay(o){
+  let s=`<table class="tw"><thead><tr><th></th>${o.cols.map(c=>`<th>${c}</th>`).join('')}<th>Total</th></tr></thead><tbody>`;
+  const colT=o.cols.map((_,j)=>o.rows.reduce((a,r)=>a+r.v[j],0));
+  o.rows.forEach(r=>{ s+=`<tr><th>${r.name}</th>${r.v.map(v=>`<td>${v}</td>`).join('')}<td class="tot">${r.v.reduce((a,b)=>a+b,0)}</td></tr>`; });
+  s+=`<tr><th>Total</th>${colT.map(v=>`<td class="tot">${v}</td>`).join('')}<td class="tot">${colT.reduce((a,b)=>a+b,0)}</td></tr></tbody></table>`;
+  return s;
+}
+function stemplot(rows,key){ return `<div class="leafplot">${rows.map(r=>`<div class="srow"><span class="st">${r[0]}</span><span>${r[1]}</span></div>`).join('')}<div class="key">${key}</div></div>`; }
+
+/* ===================== SHARED DATA / FIGURES ===================== */
+const commute=[5,6,7,7,8,8,8,9,9,10,10,10,10,11,11,12,13,14,16,19,24,38];
+const FIG={
+  lunchBar: ()=>barChart({cats:['Pizza','Tacos','Chicken sandwich','Salad'],vals:[28,20,18,14],ymax:30,ytick:5,xlabel:'Favorite school lunch',ylabel:'Number of students',aria:'Bar chart of favorite lunch'}),
+  musicTable: ()=>twoWay({cols:['No music','Lo-fi','Pop'],rows:[{name:'Underclassmen',v:[20,35,45]},{name:'Upperclassmen',v:[30,50,20]}]}),
+  musicSeg: ()=>segBar({groups:[{name:'Underclassmen',vals:[20,35,45]},{name:'Upperclassmen',vals:[30,50,20]}],cats:['No music','Lo-fi','Pop'],legendTitle:'Study music',aria:'Segmented bar chart of study music by grade level'}),
+  commuteDot: ()=>dotplot({groups:[{name:'',data:commute}],min:0,max:40,tick:5,label:'Commute time to school (minutes)',aria:'Dotplot of commute times'}),
+  scoreStem: ()=>stemplot([['6','2 8'],['7','0 3 5 5 9'],['8','1 2 4 4 6 8 8'],['9','0 1 5']],'Key: 7 | 3 = a score of 73 points'),
+  fiveKHist: ()=>histogram({bins:[{lo:15,hi:20,c:2},{lo:20,hi:25,c:6},{lo:25,hi:30,c:9},{lo:30,hi:35,c:5},{lo:35,hi:40,c:2},{lo:40,hi:45,c:3},{lo:45,hi:50,c:7},{lo:50,hi:55,c:8},{lo:55,hi:60,c:4},{lo:60,hi:65,c:1}],ymax:10,ytick:2,xtick:5,label:'Finish time in a charity 5K (minutes)',ylabel:'Number of participants'}),
+  quizBox: ()=>boxplot({groups:[{five:[52,68,76,84,97]}],min:50,max:100,tick:10,label:'Quiz score (points)'}),
+  phoneBox: ()=>boxplot({groups:[{name:'Brand X',five:[8,10,11,12.5,14]},{name:'Brand Y',five:[6,9,12,13,18]}],min:4,max:20,tick:2,label:'Battery life (hours)'}),
+  gameBox: ()=>boxplot({groups:[{five:[0,3,5.5,8,10],out:[21]}],min:0,max:22,tick:2,label:'Hours of video games per week'}),
+  sleepDot: ()=>dotplot({groups:[{name:'Freshmen',data:[6,6.5,7,7,7.5,7.5,7.5,8,8,8,8,8.5,8.5,8.5,9,9,9,9.5,10,10]},{name:'Seniors',data:[4,5,5,5.5,5.5,6,6,6,6,6.5,6.5,6.5,7,7,7,7.5,8,8.5,9,11]}],min:3,max:12,tick:1,step:.5,label:'Hours of sleep on a school night'})
+};
+
+/* ===================== CONTENT ===================== */
+const SECTIONS=[
+{ id:'s1', title:'Statistical Studies & Variables', ced:'CED Topics 1.1–1.2 · Skills 1.A, 2.A',
+review:`
+<h3>What is a statistical study?</h3>
+<ul>
+<li>A <b>statistical study</b> collects data from a <b>sample</b> to answer an <b>investigative question</b> about a larger <b>population</b>.</li>
+<li>We study a sample because the population is usually too large, too expensive, or too difficult to measure completely.</li>
+<li>Every number in a study connects back to something real. Answering <b>“in context”</b> means saying what the number means in that real-world situation (variable, units, who/what).</li>
+</ul>
+<div class="vocab">
+<div><b>Population (N)</b>All the individuals or items of interest. <em>N</em> = population size.</div>
+<div><b>Sample (n)</b>The subset of the population we actually collect data from. <em>n</em> = sample size.</div>
+<div><b>Datum / Data set</b>One piece of information about an individual / a collection of data.</div>
+<div><b>Observational unit</b>The individual or item a datum is collected from (a person, a phone, a day…).</div>
+<div><b>Variable</b>A characteristic that can change from one observational unit to another.</div>
+<div><b>Parameter vs. Statistic</b><b style="display:inline">P</b>arameter → <b style="display:inline">P</b>opulation. <b style="display:inline">S</b>tatistic → <b style="display:inline">S</b>ample. A statistic is used to estimate the (usually unknown) parameter, but it rarely equals it exactly.</div>
+</div>
+<h3>Types of variables</h3>
+<ul>
+<li><b>Categorical (qualitative):</b> values are category names or group labels (eye color, grade level, yes/no).</li>
+<li><b>Quantitative (numerical):</b> values are measured or counted numbers, usually with units.
+  <ul><li><b>Discrete:</b> countable values — number of siblings, number of texts sent.</li>
+  <li><b>Continuous:</b> any value in an interval — time, height, weight.</li></ul></li>
+</ul>
+<h3>Investigative questions</h3>
+<ul>
+<li>Have a defined purpose <em>before</em> data are collected — and don’t change the question after seeing the results.</li>
+<li>Must be posed so the needed data can actually be collected and analyzed.</li>
+<li>A statistical question anticipates <em>variability</em> (“What is the typical…”, “What proportion of…”), not a single fixed answer.</li>
+</ul>
+<div class="callout warn"><strong>Watch out</strong>Numbers that are labels — ZIP codes, jersey numbers, phone numbers — are <b>categorical</b>. Quick test: does an average make sense? An “average ZIP code” doesn’t.</div>
+`,
+mc:[
+{q:`A school district wants to estimate the mean number of hours of sleep per night for its 18,500 high school students. Researchers survey 400 randomly selected students. Which correctly identifies <i>N</i> and <i>n</i>?`,o:[`N = 400 and n = 18,500`,`N = 18,500 and n = 400`,`N = 18,900 and n = 400`,`N = the mean hours of sleep and n = 400`],a:1,e:`<i>N</i> is the size of the population (all 18,500 students) and <i>n</i> is the size of the sample (the 400 students surveyed).`},
+{q:`A state wildlife agency wants to know the mean length of all trout in a 40-mile river. Which best explains why a statistical study (using a sample) is needed?`,o:[`A sample always gives the exact value of the population mean.`,`Statistical studies are only used when the population is made of people.`,`Catching and measuring every trout in the river would be extremely difficult or impossible.`,`A sample guarantees every trout will be measured.`],a:2,e:`Statistical studies are necessary when the population is too large or too difficult to collect data from every individual. A sample estimates the population mean; it does not give it exactly.`},
+{q:`Which of the following is a valid statistical investigative question?`,o:[`How many minutes did I spend on my phone yesterday?`,`Is social media bad?`,`Which app has the coolest logo?`,`What is the typical number of minutes per day Ballantyne Ridge juniors spend on social media?`],a:3,e:`A statistical investigative question has a clear purpose, anticipates variability across many individuals, and can be answered with data that can be collected. The others ask for one fixed value, are too vague to measure, or are opinions.`},
+{q:`A quality inspector selects 60 bags of chips from a day’s production and finds a mean weight of 28.4 grams. In this context, 28.4 grams is a`,o:[`parameter, because it describes all bags made that day.`,`statistic, because it summarizes data from a sample.`,`parameter, because it is a mean.`,`variable, because weights change from bag to bag.`],a:1,e:`28.4 g comes from the 60 sampled bags, so it is a statistic. It estimates the parameter (the mean weight of all bags produced that day). The variable is “weight of a bag”; 28.4 is a summary of that variable.`},
+{q:`Which of the following variables is categorical?`,o:[`ZIP code of a student’s home address`,`Number of siblings a student has`,`Height of a student in centimeters`,`Time it takes a student to run a mile`],a:0,e:`ZIP codes are numbers used as labels for regions. Averaging them makes no sense, so ZIP code is categorical. The other three are quantitative.`},
+{q:`Which of the following is a <b>continuous</b> quantitative variable?`,o:[`Number of cars in the student parking lot`,`Favorite music genre`,`Weight of a student’s backpack (pounds)`,`Number of goals scored in a soccer game`],a:2,e:`Weight can take any value in an interval (12.37 lb, 12.371 lb…), so it is continuous. Counts like cars and goals are discrete; genre is categorical.`},
+{q:`A researcher plans to study whether a new tutoring program improves students’ reading scores. After analyzing the data, she sees an interesting pattern in math scores and rewrites her investigative question to be about math instead. What is the problem?`,o:[`Investigative questions should never involve test scores.`,`An investigative question should have a defined purpose and should not be changed based on the data analysis or results.`,`She should have used a census instead of a sample.`,`There is no problem; questions should be updated to match the most interesting results.`],a:1,e:`Changing the question after seeing the data lets the results drive the question, which can lead to misleading conclusions. The investigative question is set before data collection and stays fixed.`}
+],
+frq:[
+{q:`A café owner randomly selects 50 customers one week and records each customer’s <b>drink ordered</b> (coffee, tea, or other), <b>time spent in the café</b> (minutes), <b>number of items purchased</b>, and <b>whether they paid with a card</b> (yes/no). The mean number of items purchased for these 50 customers was 2.3.<br>(a) Identify the observational units.<br>(b) Classify each variable as categorical or quantitative. For each quantitative variable, state whether it is discrete or continuous.<br>(c) Is 2.3 a parameter or a statistic? Explain.`,
+model:`<p><b>(a)</b> The observational units are the 50 customers selected.</p>
+<p><b>(b)</b> Drink ordered — categorical. Time spent in the café — quantitative, continuous. Number of items purchased — quantitative, discrete. Paid with card — categorical.</p>
+<p><b>(c)</b> 2.3 is a <b>statistic</b> because it summarizes data from the sample of 50 customers, not from all of the café’s customers.</p>`,
+check:[`Named the 50 customers (not the variables) as the observational units`,`Classified all four variables correctly`,`Labeled discrete vs. continuous for both quantitative variables`,`Said “statistic” AND tied it to the sample of 50`]}
+]},
+
+{ id:'s2', title:'One Categorical Variable', ced:'CED Topics 1.3–1.4 · Skills 3.A, 4.A, 4.B',
+review:`
+<h3>Tables</h3>
+<ul>
+<li>A <b>frequency table</b> shows the count of observational units in each category.</li>
+<li>A <b>relative frequency table</b> shows the proportion in each category: <span class="formula">relative frequency = count ÷ total</span></li>
+<li>Proportions, percentages, relative frequencies, and ratios all carry the same information. Relative frequencies in a table add to 1 (100%).</li>
+</ul>
+<h3>Graphs</h3>
+<div class="vocab">
+<div><b>Bar chart (bar graph)</b>One bar per category; the height (or length) shows the count or proportion. Bars are separated, and categories can be in any order.</div>
+<div><b>Pie chart</b>Each slice is a category; the slice’s share of the circle is its relative frequency. Only works when every individual is in exactly one category, so slices total 100%.</div>
+</div>
+<h3>Comparing and justifying</h3>
+<ul>
+<li>To compare two groups of <b>different sizes</b>, compare <b>relative frequencies</b>, not counts.</li>
+<li>To justify a claim, cite specific values from the table or graph and explain in context.</li>
+<li>Represent data honestly: label axes, start count/proportion axes at 0, and use the same scale when comparing.</li>
+</ul>
+<div class="callout warn"><strong>Watch out</strong>A bar chart is <b>not</b> a histogram. Bar charts display <b>categorical</b> data (gaps, any order). Histograms display <b>quantitative</b> data (number line, bars touch).</div>
+`,
+mc:[
+{q:`Eighty students chose their favorite school lunch: Pizza 28, Tacos 20, Chicken sandwich 18, Salad 14. What is the relative frequency of Tacos?`,o:[`20`,`0.20`,`0.25`,`0.35`],a:2,e:`Relative frequency = count ÷ total = 20 ÷ 80 = 0.25. (0.35 is the relative frequency of Pizza.)`},
+{q:`The bar chart shows the same 80 students’ favorite lunches. Which statement is supported by the graph?`,fig:'lunchBar',o:[`Half of the students chose pizza or tacos.`,`Salad was chosen by 14% of the students.`,`Chicken sandwich was chosen by twice as many students as salad.`,`More than one-third of the students chose pizza.`],a:3,e:`28 ÷ 80 = 0.35, which is more than 1/3 ≈ 0.333. Pizza or tacos is 48/80 = 0.60 (not half); salad is 14/80 = 17.5%; chicken (18) is not twice salad (14).`},
+{q:`At School A, 90 of 300 students bike to school. At School B, 48 of 120 students bike to school. Which statement is correct?`,o:[`School A has a greater proportion of bikers because 90 > 48.`,`School B has a greater proportion of bikers: 0.40 compared with 0.30.`,`The schools have the same proportion of bikers.`,`The schools can’t be compared because they are different sizes.`],a:1,e:`Use relative frequencies to compare groups of different sizes: A = 90/300 = 0.30, B = 48/120 = 0.40. School A has more bikers in count, but School B has a greater proportion.`},
+{q:`For which data set would a pie chart <b>NOT</b> be appropriate?`,o:[`The percent of students in each grade level at a school`,`The percent of a family’s monthly budget spent in each category`,`The percent of students who play each of several sports, where a student may play more than one sport`,`The percent of votes each candidate received in a class election (one vote per student)`],a:2,e:`A pie chart needs parts of one whole — each individual in exactly one category, totaling 100%. If students can play more than one sport, the percentages can add to more than 100%. A bar chart would work instead.`},
+{q:`How does a bar chart differ from a histogram?`,o:[`A bar chart displays a categorical variable; its bars are separated and the categories can be in any order.`,`A bar chart displays a quantitative variable using intervals called bins.`,`A bar chart can only show counts, never proportions.`,`There is no difference; the terms mean the same thing.`],a:0,e:`Bar charts are for categorical variables. Histograms are for quantitative variables, with bins on a number line in their natural order. Bar charts can show counts or proportions.`},
+{q:`A relative frequency table of eye color for 200 students shows Brown 0.45, Blue 0.25, Hazel 0.12, and Green (missing). How many students have green eyes?`,o:[`18`,`0.18`,`36`,`64`],a:2,e:`Relative frequencies add to 1, so Green = 1 − (0.45 + 0.25 + 0.12) = 0.18. The count is 0.18 × 200 = 36 students.`}
+],
+frq:[
+{q:`Two classes reported how they get to school.<br><b>Mr. Lee’s class (25 students):</b> Bus 10, Car 9, Walk/Bike 6<br><b>Ms. Diaz’s class (40 students):</b> Bus 12, Car 20, Walk/Bike 8<br>(a) Construct a relative frequency table for each class.<br>(b) A student claims, “Ms. Diaz’s class rides the bus more because 12 is greater than 10.” Do you agree? Justify your answer.`,
+model:`<table class="tw"><thead><tr><th></th><th>Bus</th><th>Car</th><th>Walk/Bike</th></tr></thead><tbody><tr><th>Mr. Lee</th><td>0.40</td><td>0.36</td><td>0.24</td></tr><tr><th>Ms. Diaz</th><td>0.30</td><td>0.50</td><td>0.20</td></tr></tbody></table>
+<p><b>(b)</b> No. The classes are different sizes, so we should compare proportions, not counts. 40% of Mr. Lee’s class rides the bus compared with only 30% of Ms. Diaz’s class, so a <b>greater proportion</b> of Mr. Lee’s class rides the bus.</p>`,
+check:[`Divided by the correct class total (25 and 40)`,`Each row of relative frequencies adds to 1`,`Disagreed with the claim`,`Explained that different class sizes require comparing proportions`,`Cited both proportions (0.40 vs 0.30) with a comparison word`]}
+]},
+
+{ id:'s3', title:'Two Categorical Variables', ced:'CED Topics 2.1–2.2 · Skills 3.B, 4.A, 4.B',
+review:`
+<h3>Two-way tables</h3>
+<p>A <b>two-way table</b> (contingency table) summarizes two categorical variables for the same individuals. Cells can hold counts or relative frequencies.</p>
+<div class="vocab">
+<div><b>Joint relative frequency</b>cell ÷ <em>grand total</em><br>“…are upperclassmen <u>and</u> prefer lo-fi”</div>
+<div><b>Marginal relative frequency</b>row total or column total ÷ <em>grand total</em><br>“…of all students prefer pop”</div>
+<div><b>Conditional relative frequency</b>cell ÷ the total of <em>its row (or column)</em><br>“<u>Of the</u> underclassmen, what proportion…”</div>
+</div>
+<h3>Graphs for two categorical variables</h3>
+<ul>
+<li><b>Side-by-side bar chart:</b> bars for each category of one variable, grouped by the other.</li>
+<li><b>Segmented (stacked) bar chart:</b> each bar is a group and totals 100%; segments show the conditional distribution.</li>
+<li><b>Mosaic plot:</b> like a segmented bar chart, but each bar’s <em>width</em> shows the relative size of that group.</li>
+</ul>
+<h3>Association</h3>
+<ul>
+<li>Two categorical variables are <b>associated</b> if the conditional distributions of one variable are <b>different</b> across the categories of the other.</li>
+<li>If the conditional distributions are (about) the same, there is <b>no association</b> — the segmented bars would look alike.</li>
+<li>To justify, compare conditional relative frequencies with numbers: “45% of underclassmen prefer pop compared with only 20% of upperclassmen.”</li>
+</ul>
+<div class="callout warn"><strong>Watch out</strong>The proportion <em>of underclassmen who prefer pop</em> is NOT the same as the proportion <em>of pop-lovers who are underclassmen</em>. The group after “of,” “among,” or “given” is your denominator.</div>
+`,
+mc:[
+{q:`Two hundred students were asked what they listen to while studying. Use the table. What proportion of all 200 students are upperclassmen <b>and</b> prefer lo-fi?`,fig:'musicTable',o:[`0.25`,`0.50`,`0.59`,`0.425`],a:0,e:`This is a joint relative frequency: cell ÷ grand total = 50 ÷ 200 = 0.25. (50/100 is a conditional relative frequency; 85/200 = 0.425 is a marginal one.)`},
+{q:`Using the same table, what proportion of all students prefer pop?`,fig:'musicTable',o:[`0.20`,`0.325`,`0.45`,`0.65`],a:1,e:`This is a marginal relative frequency: column total ÷ grand total = 65 ÷ 200 = 0.325.`},
+{q:`Using the same table: <b>among students who prefer pop</b>, what proportion are underclassmen?`,fig:'musicTable',o:[`0.45`,`0.225`,`0.692`,`0.325`],a:2,e:`Restrict to the pop column (65 students): 45 ÷ 65 ≈ 0.692. Compare with 0.45, the proportion of <i>underclassmen</i> who prefer pop — a different conditional relative frequency.`},
+{q:`Using the same table, what proportion of upperclassmen prefer no music?`,fig:'musicTable',o:[`0.60`,`0.15`,`0.25`,`0.30`],a:3,e:`Restrict to the upperclassmen row (100 students): 30 ÷ 100 = 0.30. (30/50 = 0.60 would be the proportion of no-music students who are upperclassmen.)`},
+{q:`The segmented bar chart shows the conditional distributions of study music for each grade level. Is there an association between grade level and study-music preference for these students?`,fig:'musicSeg',o:[`No, because each grade level has 100 students.`,`Yes, because more students prefer lo-fi than any other choice.`,`Yes, because the distributions differ — for example, 0.45 of underclassmen prefer pop compared with 0.20 of upperclassmen.`,`No, because you can’t tell association from a segmented bar chart.`],a:2,e:`Association means the conditional distributions differ across groups. The pop segment is much larger for underclassmen (0.45) than upperclassmen (0.20). Lo-fi being most popular overall describes a marginal distribution, not an association.`},
+{q:`If grade level and study-music preference had <b>no association</b>, what would a segmented bar chart look like?`,o:[`Each bar would be the same height.`,`The two bars would be divided into segments of the same (or nearly the same) sizes.`,`Each bar would have only one segment.`,`The segments within each bar would all be equal in size.`],a:1,e:`No association means the conditional distribution of music preference is the same for both grade levels, so the segments would match from bar to bar. (Every bar in a segmented bar chart is the same height — 100% — whether or not there is an association.)`},
+{q:`In a mosaic plot, what does the <b>width</b> of each bar show?`,o:[`The relative size of each group`,`The proportion in each category of the response`,`The number of categories`,`Nothing — all bars have the same width`],a:0,e:`A mosaic plot is a segmented bar chart in which each bar’s width is proportional to the size of that group, so you can see both the conditional distributions and how big each group is.`}
+],
+frq:[
+{q:`A survey of 250 adults recorded where they live and whether they own a pet.`+
+`<table class="tw"><thead><tr><th></th><th>Owns a pet</th><th>No pet</th><th>Total</th></tr></thead><tbody><tr><th>Apartment</th><td>40</td><td>60</td><td class="tot">100</td></tr><tr><th>House</th><td>105</td><td>45</td><td class="tot">150</td></tr><tr><th>Total</th><td class="tot">145</td><td class="tot">105</td><td class="tot">250</td></tr></tbody></table>`+
+`(a) What proportion of house dwellers own a pet?<br>(b) What proportion of pet owners live in an apartment?<br>(c) Is there an association between type of home and pet ownership for these adults? Justify your answer.`,
+model:`<p><b>(a)</b> 105 ÷ 150 = <b>0.70</b></p><p><b>(b)</b> 40 ÷ 145 ≈ <b>0.276</b></p>
+<p><b>(c)</b> Yes. The proportion of adults who own a pet is 0.70 for house dwellers but only 40 ÷ 100 = 0.40 for apartment dwellers. Because the conditional distributions of pet ownership differ by type of home, there is an association between type of home and pet ownership for these 250 adults.</p>`,
+check:[`(a) used the House row total (150) as the denominator`,`(b) used the pet-owner column total (145) as the denominator`,`(c) compared two conditional relative frequencies with numbers`,`(c) stated the conclusion in context`]}
+]},
+
+{ id:'s4', title:'Graphing & Describing Quantitative Data', ced:'CED Topics 1.5–1.6 · Skills 3.A, 4.A, 4.B',
+review:`
+<h3>Graphs for one quantitative variable</h3>
+<div class="vocab">
+<div><b>Dotplot</b>One dot per value above a number line; repeated values stack.</div>
+<div><b>Stem-and-leaf plot</b>Splits each value into a stem (leading digits) and a leaf (last digit), both in order. <em>Always include a key.</em></div>
+<div><b>Histogram</b>Values grouped into ordered intervals (bins); bar height = frequency or relative frequency. Changing the bin width can change the picture. Individual values are lost.</div>
+</div>
+<h3>Describing a distribution — always IN CONTEXT</h3>
+<ul>
+<li><b>Shape:</b> skewed right (long tail toward larger values), skewed left (long tail toward smaller values), or approximately symmetric; unimodal, bimodal, or approximately uniform.</li>
+<li><b>Unusual features:</b> outliers (unusually small or large values), gaps (regions with no data), clusters (groups of values often separated by gaps).</li>
+<li><b>Center:</b> a typical value (median or mean).</li>
+<li><b>Variability (spread):</b> range, IQR, or standard deviation.</li>
+</ul>
+<div class="callout tip"><strong>Sentence frame</strong>“The distribution of <em>[variable with units]</em> for <em>[who]</em> is <em>[shape]</em> with <em>[unusual features]</em>. The center is about <em>[value + units]</em>, and values vary from <em>[min]</em> to <em>[max]</em>.”</div>
+<div class="callout warn"><strong>Watch out</strong>Skew is named for the <b>tail</b>, not the peak. Say “approximately symmetric” — real data are never perfectly symmetric. A complete description addresses all four features, not just the center.</div>
+`,
+mc:[
+{q:`The dotplot shows commute times for 22 students. Which best describes the shape of the distribution?`,fig:'commuteDot',o:[`Skewed left`,`Approximately symmetric`,`Skewed right`,`Approximately uniform`],a:2,e:`Most commute times are clustered between 5 and 14 minutes, with a long tail stretching toward larger values (16, 19, 24, 38). A longer right tail means skewed right.`},
+{q:`Which unusual feature appears in the commute-time dotplot?`,fig:'commuteDot',o:[`A gap between 24 and 38 minutes`,`A cluster of values around 30 minutes`,`A second peak near 20 minutes`,`A gap between 5 and 10 minutes`],a:0,e:`There are no observed values between 24 and 38 minutes, so there is a gap, and 38 minutes stands apart as a possible outlier.`},
+{q:`The stem-and-leaf plot shows test scores for a class. How many students scored at least 80?`,fig:'scoreStem',o:[`3`,`7`,`12`,`10`],a:3,e:`Scores of 80 or more are in the 8 and 9 stems: 7 leaves + 3 leaves = 10 students.`},
+{q:`Using the same stem-and-leaf plot, what is the median test score?`,fig:'scoreStem',o:[`81`,`82`,`84`,`79.5`],a:1,e:`There are 17 scores, so the median is the 9th value in order: 62, 68, 70, 73, 75, 75, 79, 81, <b>82</b>, … The median is 82.`},
+{q:`Which description fits a distribution that is <b>skewed left</b>?`,o:[`Most values are relatively large, with a longer tail of smaller values.`,`Most values are relatively small, with a longer tail of larger values.`,`The left half is a mirror image of the right half.`,`All values occur with about the same frequency.`],a:0,e:`Skewed left means the left tail (toward smaller values) is longer. The bulk of the data sits at the higher end. Example: scores on an easy test.`},
+{q:`The histogram shows finish times for participants in a charity 5K, which included both runners and walkers. Which best describes the distribution?`,fig:'fiveKHist',o:[`Unimodal and skewed right`,`Bimodal, suggesting two groups — likely runners and walkers`,`Approximately uniform`,`Unimodal and approximately symmetric`],a:1,e:`There are two clear peaks (25–30 minutes and 50–55 minutes). A bimodal shape often suggests two different groups in the data — here, faster runners and slower walkers.`},
+{q:`Two students made histograms of the same data set, but their graphs look quite different. What is the most likely reason?`,o:[`One student used a categorical variable.`,`Histograms always look different every time they are made.`,`They used different bin widths.`,`One histogram shows the mean and the other shows the median.`],a:2,e:`Changing the interval (bin) width changes how values are grouped, which can change the appearance of a histogram even for identical data.`}
+],
+frq:[
+{q:`Use the dotplot of commute times for 22 students to <b>describe the distribution</b>.`,fig:'commuteDot',
+model:`<p>The distribution of commute times for these 22 students is <b>unimodal and skewed right</b>. There is a <b>gap</b> between 24 and 38 minutes, and 38 minutes appears to be an <b>outlier</b> (using the 1.5 × IQR rule, both 24 and 38 minutes are outliers). The <b>median</b> commute time is <b>10 minutes</b>, and commute times <b>vary from 5 to 38 minutes</b> (range = 33 minutes; IQR = 13 − 8 = 5 minutes).</p>`,
+check:[`Shape (skewed right) — and described as unimodal`,`Unusual features (gap and/or outlier at 38)`,`Center with a value and units (median ≈ 10 minutes)`,`Variability with values and units (range or IQR)`,`Context: named the variable (commute time) and units (minutes)`]}
+]},
+
+{ id:'s5', title:'Summary Statistics & Boxplots', ced:'CED Topics 1.7–1.8 · Skills 3.A, 3.B, 4.A, 4.B',
+review:`
+<h3>Measures of center and position</h3>
+<ul>
+<li><b>Mean:</b> <span class="formula"><span class="xb">x</span> = Σx<sub>i</sub> ÷ n</span> — the balance point. <em>Nonresistant.</em></li>
+<li><b>Median:</b> middle value of the ordered data (mean of the two middle values when n is even). <em>Resistant.</em></li>
+<li><b>Quartiles:</b> Q1 = median of the lower half, Q3 = median of the upper half. About 25% of values are ≤ Q1 and 75% are ≤ Q3.</li>
+<li><b>Percentile:</b> the p<sup>th</sup> percentile is the value with p% of the data less than or equal to it. Q1 = 25th, median = 50th, Q3 = 75th percentile.</li>
+</ul>
+<h3>Measures of variability</h3>
+<ul>
+<li><b>Range</b> = max − min &nbsp; · &nbsp; <b>IQR</b> = Q3 − Q1 (spread of the middle 50%)</li>
+<li><b>Standard deviation:</b> <span class="formula">s = √[ Σ(x<sub>i</sub> − <span class="xb">x</span>)² ÷ (n − 1) ]</span> — the typical distance of the values from the mean. s² is the variance.</li>
+</ul>
+<h3>Outliers — two common rules</h3>
+<ul>
+<li><b>1.5 × IQR rule:</b> outlier if below Q1 − 1.5·IQR or above Q3 + 1.5·IQR.</li>
+<li><b>2 SD rule:</b> outlier if more than 2 standard deviations above or below the mean.</li>
+</ul>
+<h3>Choosing a summary statistic</h3>
+<ul>
+<li><b>Resistant:</b> median, IQR (outliers barely affect them). <b>Nonresistant:</b> mean, standard deviation, range.</li>
+<li>Skewed data or outliers → report the <b>median and IQR</b>. Roughly symmetric, no outliers → the <b>mean and SD</b> work well.</li>
+<li>Symmetric: mean ≈ median. Skewed right: mean usually <b>&gt;</b> median. Skewed left: mean usually <b>&lt;</b> median.</li>
+</ul>
+<h3>Changing units</h3>
+<ul>
+<li><b>Adding/subtracting a constant</b> shifts center and position (mean, median, quartiles) but does <b>not</b> change spread (range, IQR, SD).</li>
+<li><b>Multiplying by a positive constant</b> multiplies both center <em>and</em> spread by that constant.</li>
+</ul>
+<h3>Five-number summary &amp; boxplots</h3>
+<ul>
+<li>Five-number summary: Min, Q1, Median, Q3, Max.</li>
+<li>Boxplot: box from Q1 to Q3 with a line at the median; whiskers reach to the min and max — or, if there are outliers, to the most extreme values that are <em>not</em> outliers, with outliers plotted separately.</li>
+<li>Each of the four sections holds about 25% of the data.</li>
+</ul>
+<div class="callout warn"><strong>Watch out</strong>A longer section of a boxplot means the values are more <b>spread out</b> — not that there are more values. A boxplot can’t show the mean, gaps, or whether a distribution is bimodal.</div>
+`,
+mc:[
+{q:`Data set: 3, 5, 6, 8, 9, 12, 15, 30. What is the median?`,o:[`8`,`8.5`,`9`,`11`],a:1,e:`n = 8 (even), so the median is the mean of the 4th and 5th values: (8 + 9) ÷ 2 = 8.5. (11 is the mean.)`},
+{q:`For the data 3, 5, 6, 8, 9, 12, 15, 30, what is the IQR?`,o:[`8`,`13.5`,`27`,`5.5`],a:0,e:`Lower half: 3, 5, 6, 8 → Q1 = 5.5. Upper half: 9, 12, 15, 30 → Q3 = 13.5. IQR = 13.5 − 5.5 = 8. (27 is the range.)`},
+{q:`Using the 1.5 × IQR rule, which values in 3, 5, 6, 8, 9, 12, 15, 30 are outliers?`,o:[`There are no outliers.`,`3 and 30`,`15 and 30`,`30 only`],a:3,e:`Fences: Q1 − 1.5(8) = 5.5 − 12 = −6.5 and Q3 + 1.5(8) = 13.5 + 12 = 25.5. Only 30 is beyond a fence.`},
+{q:`In the data 3, 5, 6, 8, 9, 12, 15, 30, the value 30 is changed to 60. Which two statistics stay the same?`,o:[`Mean and standard deviation`,`Mean and median`,`Median and IQR`,`Range and IQR`],a:2,e:`The median and IQR are resistant — changing the largest value doesn’t change the middle values or the quartiles. The mean, standard deviation, and range all increase.`},
+{q:`Daily high temperatures in a city have a mean of 20°C and a standard deviation of 4°C. Using °F = 1.8(°C) + 32, what is the standard deviation in °F?`,o:[`4°F`,`7.2°F`,`39.2°F`,`68°F`],a:1,e:`Multiplying by 1.8 multiplies the SD by 1.8: 4 × 1.8 = 7.2. Adding 32 shifts every value equally, so it does not change the spread. (The mean becomes 1.8(20) + 32 = 68°F.)`},
+{q:`The boxplot shows quiz scores for a class. About what percent of students scored between 68 and 97 points?`,fig:'quizBox',o:[`25%`,`50%`,`75%`,`100%`],a:2,e:`68 is Q1 and 97 is the maximum. From Q1 to the max covers three of the four 25% sections: about 75% of the scores.`},
+{q:`Jordan’s height is at the 80th percentile of the students in his grade. What does this mean?`,o:[`Jordan is 80 inches tall.`,`Jordan is taller than exactly 20% of the students.`,`Jordan’s height is 80% of the tallest student’s height.`,`About 80% of the students in his grade have heights less than or equal to Jordan’s.`],a:3,e:`The p<sup>th</sup> percentile is the value with p% of the data less than or equal to it.`},
+{q:`For the data 3, 5, 6, 8, 9, 12, 15, 30, the mean is 11 and s ≈ 8.59. Which is the best interpretation of the standard deviation?`,o:[`The values typically vary by about 8.59 units from the mean of 11.`,`The middle 50% of the values span 8.59 units.`,`Every value is within 8.59 units of the mean.`,`The data range from 11 − 8.59 to 11 + 8.59.`],a:0,e:`Standard deviation measures the typical distance of the data values from their mean. It isn’t a guarantee for every value (30 is 19 units away), and the spread of the middle 50% is the IQR.`},
+{q:`Test scores have a mean of 70 and a standard deviation of 8. Using the 2-standard-deviation rule, which score is an outlier?`,o:[`55`,`60`,`84`,`88`],a:3,e:`Outliers are below 70 − 2(8) = 54 or above 70 + 2(8) = 86. Only 88 is beyond those boundaries.`},
+{q:`A distribution of home prices in a town is strongly skewed right. Which is most likely true?`,o:[`The mean is less than the median.`,`The mean is greater than the median.`,`The mean equals the median.`,`The median is pulled toward the expensive homes.`],a:1,e:`The few very expensive homes in the right tail pull the (nonresistant) mean upward, so the mean is usually greater than the median. The median is resistant.`}
+],
+frq:[
+{q:`Twelve students reported the number of hours they play video games per week:<br><b>0, 2, 3, 3, 4, 5, 6, 6, 7, 9, 10, 21</b><br>(a) Find the five-number summary.<br>(b) Use the 1.5 × IQR rule to determine whether there are any outliers. Show your work.<br>(c) Sketch a boxplot.<br>(d) The mean is about 6.33 hours. Which measure of center better describes a typical student here, the mean or the median? Explain.`,
+model:`<p><b>(a)</b> n = 12. Median = (5 + 6) ÷ 2 = <b>5.5</b>. Lower half 0, 2, 3, 3, 4, 5 → Q1 = <b>3</b>. Upper half 6, 6, 7, 9, 10, 21 → Q3 = <b>8</b>. Five-number summary: <b>0, 3, 5.5, 8, 21</b>.</p>
+<p><b>(b)</b> IQR = 8 − 3 = 5. Lower fence = 3 − 1.5(5) = −4.5. Upper fence = 8 + 1.5(5) = 15.5. <b>21 hours is an outlier</b> because 21 &gt; 15.5. No low outliers.</p>
+<p><b>(c)</b> Whisker extends to 10 (the largest non-outlier); 21 is plotted separately:</p>${'{{gameBox}}'}
+<p><b>(d)</b> The <b>median (5.5 hours)</b>. The distribution is skewed right with a high outlier (21 hours), which pulls the nonresistant mean (6.33) upward. The median is resistant to the outlier, so it better represents a typical student’s weekly gaming time.</p>`,
+check:[`Found Q1 = 3 and Q3 = 8 using the lower and upper halves`,`Showed fence calculations, not just the answer`,`Boxplot whisker stops at 10, with 21 marked as an outlier`,`Chose the median and mentioned skew/outlier and resistance`]}
+]},
+
+{ id:'s6', title:'Comparing Distributions & z-Scores', ced:'CED Topic 1.9 · Skills 3.B, 4.A, 4.B, 4.C',
+review:`
+<h3>Comparing two or more distributions</h3>
+<ul>
+<li>Graphs for comparing: parallel (side-by-side) boxplots, back-to-back stem-and-leaf plots, dotplots or histograms on the <b>same scale</b>.</li>
+<li>Compare <b>shape, outliers/unusual features, center, and variability</b> — in context.</li>
+<li>Use <b>comparative language</b>: “greater than,” “less than,” “more variable,” “about the same as.” Listing each group’s features separately is <em>not</em> a comparison.</li>
+<li>Boxplots let you compare center, variability, outliers, and skewness — but not features like gaps or bimodality.</li>
+</ul>
+<div class="callout tip"><strong>Model comparison sentence</strong>“The median battery life for Brand Y (12 h) is <b>greater than</b> the median for Brand X (11 h), and Brand Y’s battery lives are <b>more variable</b> (IQR 4 h vs. 2.5 h).”</div>
+<h3>z-scores (standardized scores)</h3>
+<p><span class="formula">z = (x − μ) ÷ σ</span> &nbsp; (use <span class="xb">x</span> and s when μ and σ are unknown)</p>
+<ul>
+<li>A z-score tells how many standard deviations a value is <b>above</b> (z &gt; 0) or <b>below</b> (z &lt; 0) the mean.</li>
+<li>Use z-scores to compare <b>relative position</b> — within one distribution or across different distributions. The larger z-score is relatively higher.</li>
+<li>Solve for a value: <span class="formula">x = μ + zσ</span></li>
+</ul>
+<div class="callout tip"><strong>Interpretation frame</strong>“A score of 87 is 2.0 standard deviations above the mean score of 75 for this test.”</div>
+`,
+mc:[
+{q:`Maya scored 87 on Test A (mean 75, SD 6). She scored 78 on Test B (mean 60, SD 10). On which test did she perform better <b>relative to her classmates</b>?`,o:[`Test B, because 78 − 60 = 18 is larger than 87 − 75 = 12`,`Test A, because her z-score (2.0) is greater than her z-score on Test B (1.8)`,`Test A, because 87 is greater than 78`,`They are equal, because both scores are above the mean`],a:1,e:`z(A) = (87 − 75)/6 = 2.0 and z(B) = (78 − 60)/10 = 1.8. Relative to each class, Test A is the better performance. Raw points or raw differences don’t account for different spreads.`},
+{q:`A student’s reaction time has a z-score of −1.5. Which is the correct interpretation?`,o:[`The reaction time is 1.5 seconds below the mean.`,`The reaction time is 1.5 standard deviations below the mean reaction time.`,`The reaction time is at the 15th percentile.`,`The reaction time is an error because z-scores can’t be negative.`],a:1,e:`A z-score counts standard deviations from the mean. Negative means below the mean. Units of z are “standard deviations,” not the original units.`},
+{q:`Heights of a group have mean 64 inches and standard deviation 2.5 inches. What height has a z-score of 1.2?`,o:[`61 inches`,`65.2 inches`,`67 inches`,`76.8 inches`],a:2,e:`x = μ + zσ = 64 + 1.2(2.5) = 64 + 3 = 67 inches.`},
+{q:`The parallel boxplots compare battery life for two phone brands. Which statement is supported?`,fig:'phoneBox',o:[`Brand X has the greater median battery life.`,`About half of the Brand X phones lasted more than 12.5 hours.`,`Brand X was tested on more phones than Brand Y.`,`Brand Y’s battery lives are more variable; its IQR (4 h) is greater than Brand X’s (2.5 h).`],a:3,e:`IQR(X) = 12.5 − 10 = 2.5 h; IQR(Y) = 13 − 9 = 4 h. Brand Y’s median (12) is greater than X’s (11). Above Q3 is about 25%, not half. Boxplots don’t show sample size.`},
+{q:`Which statement is a correct <b>comparison</b> of the two brands’ centers?`,fig:'phoneBox',o:[`The median battery life for Brand Y (12 hours) is greater than the median for Brand X (11 hours).`,`Brand X has a median of 11 hours. Brand Y has a median of 12 hours.`,`The medians are 11 and 12.`,`Brand Y is better.`],a:0,e:`A comparison uses comparative language and context. Simply listing each value (options B and C) doesn’t compare, and “better” is vague and doesn’t name the statistic.`},
+{q:`Which feature of a distribution <b>cannot</b> be determined from a boxplot?`,o:[`The median`,`The IQR`,`Whether there are outliers (by the 1.5 × IQR rule)`,`Whether the distribution is bimodal`],a:3,e:`A boxplot is built from the five-number summary, so it hides the detailed shape — two peaks and gaps don’t show up. Use a dotplot or histogram to see modes.`}
+],
+frq:[
+{q:`The dotplots show the hours of sleep on a school night for random samples of 20 freshmen and 20 seniors at a large high school. <b>Compare</b> the distributions.`,fig:'sleepDot',
+model:`<p><b>Shape:</b> The distribution of sleep for freshmen is approximately symmetric, while the distribution for seniors is skewed right.</p>
+<p><b>Outliers:</b> Seniors have a high outlier at 11 hours (upper fence = 7.25 + 1.5(1.5) = 9.5); freshmen have no outliers.</p>
+<p><b>Center:</b> The median hours of sleep for seniors (6.5 hours) is <b>less than</b> the median for freshmen (8 hours).</p>
+<p><b>Variability:</b> Seniors’ hours of sleep are <b>more variable</b> — range 7 hours (4 to 11) compared with 4 hours (6 to 10) for freshmen. (The IQRs are the same, 1.5 hours, so the range difference is driven by the extreme values.)</p>`,
+check:[`Addressed shape, outliers, center, and variability`,`Used comparison words (greater/less, more/less variable)`,`Gave values with units for center and spread`,`Stayed in context (hours of sleep, freshmen vs seniors)`]}
+]},
+
+{ id:'s7', title:'Investigative Questions & Data Collection', ced:'CED Topic 1.10 · Skills 1.A, 2.A, 2.B',
+review:`
+<h3>The three components of an investigative question</h3>
+<ol>
+<li><b>Data collection:</b> phrased in terms of the variable(s) of interest.</li>
+<li><b>Data analysis:</b> for a hypothesis test, makes clear the parameter and the direction of the alternative (≠, &gt;, &lt;, association, not independent); for a confidence interval, the parameter and the goal of estimating it within a range of values.</li>
+<li><b>Conclusion:</b> names the population the conclusion applies to — and, for an experiment with random assignment, a cause-and-effect conclusion.</li>
+</ol>
+<h3>Types of studies</h3>
+<div class="vocab">
+<div><b>Census</b>Collects data from <em>every</em> individual in the population.</div>
+<div><b>Experiment</b>Researcher <em>imposes</em> treatments on experimental units (subjects/participants when people) and measures a response.</div>
+<div><b>Observational study</b>No treatments imposed — the researcher just records variables.</div>
+<div><b>Prospective study</b>Select units now and follow them into the future.</div>
+<div><b>Retrospective study</b>Select units now and gather data from their past.</div>
+<div><b>Survey</b>Observational study collecting data from people with a standard set of questions.</div>
+</div>
+<h3>Experiment vocabulary</h3>
+<ul>
+<li><b>Experimental unit:</b> the unit a treatment is assigned to.</li>
+<li><b>Explanatory variable (factor):</b> the variable whose levels are imposed. <b>Treatments</b> = the levels (or combinations of levels when there are 2+ factors).</li>
+<li><b>Response variable:</b> the outcome measured after treatment.</li>
+</ul>
+<h3>Confounding (observational studies)</h3>
+<p>A <b>confounding variable</b> is associated with <b>both</b> the explanatory and the response variable, giving another explanation for the relationship — so we can’t conclude cause and effect.</p>
+<h3>Generalizing</h3>
+<ul>
+<li>A sample is <b>random</b> when individuals are selected with a chance mechanism (e.g., a random number generator).</li>
+<li><b>Random selection</b> → results can be generalized to the population sampled.</li>
+<li>Not randomly selected (chosen deliberately or volunteers) → generalize only to individuals <b>similar to those in the study</b>.</li>
+</ul>
+<div class="callout warn"><strong>Precise language matters</strong><b>Random selection</b> lets you <b>generalize</b> to a population. <b>Random assignment</b> (in an experiment) lets you conclude <b>cause and effect</b>. Don’t mix them up! When describing a confounding variable, explain the link to <b>both</b> variables.</div>
+`,
+mc:[
+{q:`Researchers randomly assign 60 volunteers to use either a standing desk or a regular desk for 4 weeks and then measure each person’s back pain. This study is`,o:[`an experiment, because treatments are imposed on the participants.`,`an observational study, because the participants volunteered.`,`a survey, because back pain is self-reported.`,`a census, because every volunteer participated.`],a:0,e:`The researchers decided which desk each person used — imposing treatments — so it is an experiment. Using volunteers affects who you can generalize to, not whether it is an experiment.`},
+{q:`Researchers select 500 adults today and review their medical records from the past 10 years to look for a link between soda consumption and dental problems. What type of study is this?`,o:[`A randomized experiment`,`A prospective observational study`,`A retrospective observational study`,`A census`],a:2,e:`No treatments are imposed (observational), and the data come from the past (retrospective). A prospective study would follow the adults into the future.`},
+{q:`An experiment tests 3 types of fertilizer and 2 watering schedules (daily and every other day) on tomato plants. How many treatments are there?`,o:[`2`,`3`,`5`,`6`],a:3,e:`With two factors, treatments are all combinations of levels: 3 × 2 = 6 treatments.`},
+{q:`An observational study finds that students who eat breakfast tend to have higher GPAs. Which is the best example of a possible confounding variable?`,o:[`The number of hours of sleep: students who sleep more may have time for breakfast and also tend to do better in school.`,`The color of the cafeteria walls`,`The students’ GPAs`,`Whether the student eats breakfast`],a:0,e:`A confounding variable must be associated with both the explanatory variable (breakfast) and the response (GPA). Sleep plausibly relates to both. GPA and breakfast are the variables being studied themselves.`},
+{q:`A fitness researcher recruits 80 volunteers from one gym to test a new workout plan. To whom can the results reasonably be generalized?`,o:[`All adults in the country`,`All gym members in the state`,`Only people similar to the volunteers in the study`,`No one, because the sample was not a census`],a:2,e:`When units are not randomly selected (volunteers), we can generalize only to a population of individuals similar to those in the study.`},
+{q:`A teacher records the final grade of every student in all four of her sections to find the mean grade for her classes. This is an example of`,o:[`a sample survey`,`a census`,`an experiment`,`a retrospective sample`],a:1,e:`She collects data from every individual in the population of interest (her students), which is a census.`},
+{q:`Which investigative question makes clear the parameter, the direction of the alternative, and the population?`,o:[`Do students have jobs?`,`What proportion of my friends work?`,`How many hours do the 30 seniors in my class work each week?`,`Is the proportion of all Ballantyne Ridge seniors who have a part-time job greater than 0.40?`],a:3,e:`Option D names the parameter (proportion of seniors with a part-time job), the direction (greater than 0.40), and the population (all Ballantyne Ridge seniors).`},
+{q:`Which feature of a study allows researchers to conclude that a treatment <b>caused</b> a change in the response?`,o:[`Random selection of the sample from the population`,`A large sample size`,`Random assignment of treatments to experimental units`,`Using a survey with clear questions`],a:2,e:`Random assignment tends to balance other variables across treatment groups, reducing the potential for confounding, which allows a cause-and-effect conclusion. Random selection is what allows generalizing to a population.`}
+],
+frq:[
+{q:`A researcher randomly selected 300 students from a large university and asked each student how many hours per week they spend on social media and what their current GPA is. Students who spent more time on social media tended to have lower GPAs.<br>(a) Is this an experiment or an observational study? Explain.<br>(b) Identify the explanatory and response variables.<br>(c) Can the researcher conclude that social media use causes lower GPAs? Explain, including a possible confounding variable.<br>(d) To what population can the results be generalized? Explain.`,
+model:`<p><b>(a)</b> Observational study — the researcher recorded existing social media habits and GPAs; no treatments were imposed.</p>
+<p><b>(b)</b> Explanatory: hours per week on social media. Response: GPA.</p>
+<p><b>(c)</b> No. Because this is an observational study, there was no random assignment, so a confounding variable could explain the relationship. For example, <b>hours of sleep</b>: students who spend more time on social media may stay up later and sleep less, and students who sleep less may tend to earn lower GPAs.</p>
+<p><b>(d)</b> All students at this university, because the 300 students were randomly selected from that population.</p>`,
+check:[`(a) gave “observational” AND the reason (no treatments imposed)`,`(b) correct explanatory and response variables`,`(c) said no, citing lack of random assignment`,`(c) confounding variable is linked to BOTH social media use and GPA`,`(d) generalized only to students at this university because of random selection`]}
+]}
+];
+
+/* ===================== QUICK REFERENCE ===================== */
+const REF=[
+['Formulas',`<ul><li>Mean: <span class="xb">x</span> = Σx ÷ n</li><li>s = √[ Σ(x − <span class="xb">x</span>)² ÷ (n − 1) ]</li><li>Range = max − min</li><li>IQR = Q3 − Q1</li><li>Outlier fences: Q1 − 1.5·IQR and Q3 + 1.5·IQR</li><li>2 SD rule: beyond <span class="xb">x</span> ± 2s</li><li>z = (x − μ) ÷ σ &nbsp; · &nbsp; x = μ + zσ</li></ul>`],
+['Describe a distribution',`<ul><li><b>Shape</b> — skewed right/left, approx. symmetric; unimodal/bimodal/uniform</li><li><b>Unusual features</b> — outliers, gaps, clusters</li><li><b>Center</b> — median or mean (with units)</li><li><b>Variability</b> — range, IQR, or SD (with units)</li><li><b>Context!</b> Name the variable and units.</li><li>Comparing? Use comparison words.</li></ul>`],
+['Two-way tables',`<ul><li><b>Joint:</b> cell ÷ grand total</li><li><b>Marginal:</b> row or column total ÷ grand total</li><li><b>Conditional:</b> cell ÷ its row (or column) total</li><li><b>Association:</b> conditional distributions differ across groups</li></ul>`],
+['Resistant or not?',`<ul><li><b>Resistant:</b> median, IQR</li><li><b>Nonresistant:</b> mean, SD, range</li><li>Skewed right → mean &gt; median</li><li>Skewed left → mean &lt; median</li><li>+ constant: center shifts, spread same</li><li>× constant: center and spread both scale</li></ul>`],
+['Graphs',`<ul><li><b>Categorical:</b> bar chart, pie chart (parts of a whole); two variables: side-by-side bar, segmented bar, mosaic plot</li><li><b>Quantitative:</b> dotplot, stem-and-leaf (with key), histogram, boxplot</li></ul>`],
+['Study design',`<ul><li><b>Census:</b> every individual</li><li><b>Experiment:</b> treatments imposed</li><li><b>Observational:</b> no treatments; prospective, retrospective, survey</li><li><b>Confounding:</b> linked to both explanatory and response</li><li><b>Random selection</b> → generalize to population</li><li><b>Random assignment</b> → cause and effect</li></ul>`]
+];
+
+/* ===================== STATE ===================== */
+const KEY='apstats-u1a-hub-v1';
+let store={mc:{},frq:{}};
+try{ const raw=localStorage.getItem(KEY); if(raw) store=Object.assign(store,JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(store)); }catch(e){} }
+SECTIONS.forEach(s=>{ s.mc.forEach((q,i)=>q.id=`${s.id}-mc${i+1}`); s.frq.forEach((q,i)=>q.id=`${s.id}-frq${i+1}`); });
+const ALL_MC=SECTIONS.flatMap(s=>s.mc.map(q=>Object.assign({sec:s},q)));
+let current=SECTIONS[0].id, sub='review';
+try{ const c=localStorage.getItem(KEY+'-cur'); if(c&&SECTIONS.find(s=>s.id===c)) current=c; }catch(e){}
+
+/* ===================== RENDERING ===================== */
+const L='ABCDEFG';
+function figHTML(name){ return name&&FIG[name]?`<figure>${FIG[name]()}</figure>`:''; }
+function fillFigs(html){ return html.replace(/\{\{(\w+)\}\}/g,(m,n)=>figHTML(n)); }
+
+function mcCard(q,num,opts){
+  opts=opts||{};
+  const el=document.createElement('div'); el.className='q';
+  el.innerHTML=`<div class="qh"><span>Question ${num}</span><span class="tag">${opts.tag||''}</span></div><p class="stem">${q.q}</p>${figHTML(q.fig)}<div class="opts"></div><div class="fb"></div><div class="row" style="display:none"><button class="btn">Try again</button></div>`;
+  const box=el.querySelector('.opts'), fb=el.querySelector('.fb'), row=el.querySelector('.row');
+  const btns=q.o.map((t,i)=>{ const b=document.createElement('button'); b.className='opt'; b.innerHTML=`<span class="L">${L[i]}</span><span>${t}</span>`; b.onclick=()=>pick(i,true); box.appendChild(b); return b; });
+  function pick(i,user){
+    btns.forEach((b,j)=>{ b.disabled=true; b.classList.toggle('right',j===q.a); b.classList.toggle('wrong',j===i&&i!==q.a); });
+    const ok=i===q.a;
+    fb.className='fb show '+(ok?'ok':'no');
+    fb.innerHTML=`<b>${ok?'Correct!':'Not quite — the answer is '+L[q.a]+'.'}</b> ${q.e}`;
+    row.style.display='flex';
+    if(user&&opts.onAnswer) opts.onAnswer(ok,i);
+  }
+  row.querySelector('button').onclick=()=>{ btns.forEach(b=>{b.disabled=false;b.classList.remove('right','wrong');}); fb.className='fb'; row.style.display='none'; if(opts.onReset) opts.onReset(); };
+  if(opts.prior!=null) pick(opts.prior,false);
+  return el;
+}
+function frqCard(q,num){
+  const el=document.createElement('div'); el.className='q';
+  const saved=(store.frq[q.id]||'');
+  el.innerHTML=`<div class="qh"><span>Free Response ${num}</span><span class="tag">FRQ practice</span></div><p class="stem">${q.q}</p>${figHTML(q.fig)}
+  <label style="font-size:14px;font-weight:600;display:block;margin:8px 0 4px">Your response (saved in this browser)</label><textarea></textarea>
+  <div class="row"><button class="btn solid">Show model answer</button></div>
+  <div class="model"><h4>Model response</h4>${fillFigs(q.model)}<h4 style="margin-top:12px">Check your response</h4><div class="check">${q.check.map(c=>`<label><input type="checkbox"> <span>${c}</span></label>`).join('')}</div></div>`;
+  const ta=el.querySelector('textarea'); ta.value=saved;
+  let t; ta.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(()=>{ store.frq[q.id]=ta.value; save(); },400); });
+  const m=el.querySelector('.model'), b=el.querySelector('.row button');
+  b.onclick=()=>{ const on=m.classList.toggle('show'); b.textContent=on?'Hide model answer':'Show model answer'; };
+  return el;
+}
+
+function secCounts(s){ const total=s.mc.length; const done=s.mc.filter(q=>store.mc[q.id]&&store.mc[q.id].ok).length; return {done,total}; }
+function renderOverall(){
+  let d=0,t=0; SECTIONS.forEach(s=>{const c=secCounts(s); d+=c.done; t+=c.total;});
+  document.getElementById('ovText').textContent=`${d} of ${t} practice questions correct`;
+  document.getElementById('ovBar').style.width=(t?d/t*100:0)+'%';
+}
+function renderList(){
+  const list=document.getElementById('topicList'); list.innerHTML='';
+  const sel=document.getElementById('pick'); sel.innerHTML='';
+  SECTIONS.forEach(s=>{
+    const c=secCounts(s);
+    const b=document.createElement('button'); b.className='topic'; b.setAttribute('aria-current',s.id===current);
+    b.innerHTML=`<span class="t">${s.title}</span><span class="m">${s.ced.split('·')[0].replace('CED ','')}<span class="mini"><i style="width:${c.done/c.total*100}%"></i></span>${c.done}/${c.total}</span>`;
+    b.onclick=()=>{ current=s.id; sub='review'; try{localStorage.setItem(KEY+'-cur',current);}catch(e){} renderList(); renderPanel(); document.getElementById('topicPanel').scrollIntoView({behavior:'smooth',block:'start'}); };
+    list.appendChild(b);
+    const o=document.createElement('option'); o.value=s.id; o.textContent=`${s.title} (${c.done}/${c.total})`; if(s.id===current) o.selected=true; sel.appendChild(o);
+  });
+  renderOverall();
+}
+document.getElementById('pick').onchange=e=>{ current=e.target.value; sub='review'; try{localStorage.setItem(KEY+'-cur',current);}catch(err){} renderList(); renderPanel(); };
+
+function renderPanel(){
+  const s=SECTIONS.find(x=>x.id===current), p=document.getElementById('topicPanel');
+  p.innerHTML=`<h2>${s.title}</h2><p class="ced">${s.ced}</p>
+  <div class="subtabs" role="tablist"><button data-sub="review" aria-selected="${sub==='review'}">Concept Review</button><button data-sub="practice" aria-selected="${sub==='practice'}">Practice (${s.mc.length+s.frq.length})</button></div>
+  <div id="subBody"></div>`;
+  p.querySelectorAll('.subtabs button').forEach(b=>b.onclick=()=>{ sub=b.dataset.sub; renderPanel(); });
+  const body=p.querySelector('#subBody');
+  if(sub==='review'){
+    body.innerHTML=`<div class="review">${s.review}</div><div class="row" style="margin-top:20px"><button class="btn solid" id="goPrac">Practice this topic →</button></div>`;
+    body.querySelector('#goPrac').onclick=()=>{ sub='practice'; renderPanel(); p.scrollIntoView({behavior:'smooth',block:'start'}); };
+  } else {
+    const head=document.createElement('div'); head.className='row'; head.style.margin='0 0 14px';
+    head.innerHTML=`<span style="color:var(--muted);font-size:14px">Your first answer to each question is saved. Use “Try again” to redo one.</span><span style="flex:1"></span><button class="btn">Reset this topic</button>`;
+    head.querySelector('button').onclick=()=>{ s.mc.forEach(q=>delete store.mc[q.id]); save(); renderList(); renderPanel(); };
+    body.appendChild(head);
+    s.mc.forEach((q,i)=>{
+      const pr=store.mc[q.id];
+      body.appendChild(mcCard(q,i+1,{tag:'Multiple choice',prior:pr?pr.pick:null,
+        onAnswer:(ok,pick)=>{ store.mc[q.id]={ok,pick}; save(); renderList(); },
+        onReset:()=>{ delete store.mc[q.id]; save(); renderList(); }}));
+    });
+    s.frq.forEach((q,i)=>body.appendChild(frqCard(q,i+1)));
+    const nxt=SECTIONS[SECTIONS.indexOf(s)+1];
+    if(nxt){ const r=document.createElement('div'); r.className='row'; r.innerHTML=`<button class="btn solid">Next topic: ${nxt.title} →</button>`; r.querySelector('button').onclick=()=>{ current=nxt.id; sub='review'; renderList(); renderPanel(); p.scrollIntoView({behavior:'smooth',block:'start'}); }; body.appendChild(r); }
+  }
+}
+
+/* ===================== MIXED PRACTICE ===================== */
+let mxSet=[], mxAns={};
+function newMixed(){
+  const pool=[...ALL_MC]; for(let i=pool.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [pool[i],pool[j]]=[pool[j],pool[i]]; }
+  mxSet=pool.slice(0,10); mxAns={}; renderMixed();
+}
+function renderMixed(){
+  const list=document.getElementById('mxList'); list.innerHTML='';
+  mxSet.forEach((q,i)=>list.appendChild(mcCard(q,i+1,{tag:q.sec.title,
+    onAnswer:ok=>{ mxAns[i]=ok; updMx(); }, onReset:()=>{ delete mxAns[i]; updMx(); }})));
+  updMx();
+}
+function updMx(){
+  const n=Object.keys(mxAns).length, c=Object.values(mxAns).filter(Boolean).length;
+  document.getElementById('mxScore').textContent=`${c} / 10`;
+  document.getElementById('mxMsg').textContent = n<10 ? `${n} of 10 answered.` : (c>=9?'Excellent — you are ready!':c>=7?'Solid work. Review the topics you missed.':'Keep going — revisit the Concept Review for the topics you missed.');
+}
+document.getElementById('mxNew').onclick=newMixed;
+
+/* ===================== CALCULATOR ===================== */
+function median(a){ const n=a.length, m=Math.floor(n/2); return n%2?a[m]:(a[m-1]+a[m])/2; }
+function summarize(arr){
+  const a=[...arr].sort((p,q)=>p-q), n=a.length;
+  const mean=a.reduce((s,v)=>s+v,0)/n;
+  const sd=n>1?Math.sqrt(a.reduce((s,v)=>s+(v-mean)**2,0)/(n-1)):0;
+  const med=median(a);
+  const q1=n>1?median(a.slice(0,Math.floor(n/2))):a[0], q3=n>1?median(a.slice(Math.ceil(n/2))):a[0];
+  const iqr=q3-q1, lo=q1-1.5*iqr, hi=q3+1.5*iqr;
+  const out=a.filter(v=>v<lo||v>hi), inn=a.filter(v=>v>=lo&&v<=hi);
+  return {a,n,mean,sd,med,q1,q3,iqr,lo,hi,out,min:a[0],max:a[n-1],wlo:inn[0],whi:inn[inn.length-1]};
+}
+function niceStep(range){ if(range<=0) return 1; const rough=range/8, p=Math.pow(10,Math.floor(Math.log10(rough))), m=rough/p; return (m<1.5?1:m<3?2:m<7?5:10)*p; }
+function calc(){
+  const err=document.getElementById('cErr'), out=document.getElementById('cOut');
+  const raw=document.getElementById('cIn').value.trim();
+  err.textContent=''; out.innerHTML=''; document.getElementById('cBox').innerHTML=''; document.getElementById('cDot').innerHTML='';
+  if(!raw){ err.textContent='Enter at least two numbers.'; return; }
+  const toks=raw.split(/[\s,;]+/).filter(Boolean), nums=toks.map(Number);
+  const bad=toks.filter((t,i)=>!isFinite(nums[i]));
+  if(bad.length){ err.textContent=`These entries aren’t numbers: ${bad.slice(0,5).join(', ')}`; return; }
+  if(nums.length<2){ err.textContent='Enter at least two numbers.'; return; }
+  const r=summarize(nums);
+  const rows=[['n',r.n],['Mean (<span class="xb">x</span>)',fmt(r.mean)],['Standard deviation (s)',fmt(r.sd)],['Minimum',fmt(r.min)],['Q1',fmt(r.q1)],['Median',fmt(r.med)],['Q3',fmt(r.q3)],['Maximum',fmt(r.max)],['Range',fmt(r.max-r.min)],['IQR',fmt(r.iqr)],['Lower fence (Q1 − 1.5·IQR)',fmt(r.lo)],['Upper fence (Q3 + 1.5·IQR)',fmt(r.hi)],['Outliers (1.5·IQR rule)',r.out.length?r.out.map(fmt).join(', '):'none'],['Outliers (2 SD rule)',(()=>{const o=r.a.filter(v=>Math.abs(v-r.mean)>2*r.sd);return o.length?o.map(fmt).join(', '):'none';})()]];
+  out.innerHTML=`<table>${rows.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join('')}</table>`;
+  const st=niceStep(r.max-r.min), mn=Math.floor(r.min/st)*st;
+  let mx=Math.ceil(r.max/st)*st; if(mx<=mn) mx=mn+st;
+  document.getElementById('cBox').innerHTML=boxplot({groups:[{five:[r.wlo,r.q1,r.med,r.q3,r.whi],out:r.out}],min:mn,max:mx,tick:st,label:'Your data'});
+  if(r.n<=80){ document.getElementById('cDot').innerHTML=dotplot({groups:[{name:'',data:r.a}],min:mn,max:mx,tick:st,step:st/10,label:'Your data (dots within 1/10 of a tick are stacked)'}); }
+}
+document.getElementById('cGo').onclick=calc;
+document.getElementById('cClear').onclick=()=>{ document.getElementById('cIn').value=''; document.getElementById('cOut').innerHTML=''; document.getElementById('cBox').innerHTML=''; document.getElementById('cDot').innerHTML=''; };
+document.getElementById('zGo').onclick=()=>{
+  const x=+document.getElementById('zx').value, m=+document.getElementById('zm').value, s=+document.getElementById('zs').value, o=document.getElementById('zOut');
+  o.style.display='block';
+  if(!(s>0)){ o.innerHTML='The standard deviation must be greater than 0.'; return; }
+  const z=(x-m)/s;
+  o.innerHTML=`z = (${fmt(x)} − ${fmt(m)}) ÷ ${fmt(s)} = <b>${z.toFixed(2)}</b><br>A value of ${fmt(x)} is ${Math.abs(z).toFixed(2)} standard deviations ${z>=0?'above':'below'} the mean of ${fmt(m)}.`;
+};
+
+/* ===================== TABS / INIT ===================== */
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav.tabs button').forEach(x=>x.setAttribute('aria-selected',x===b));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+b.dataset.view));
+  if(b.dataset.view==='mixed'&&!mxSet.length) newMixed();
+  if(b.dataset.view==='calc'&&!document.getElementById('cOut').innerHTML) calc();
+});
+document.getElementById('refGrid').innerHTML=REF.map(r=>`<div class="panel"><h3>${r[0]}</h3>${r[1]}</div>`).join('');
+renderList(); renderPanel();
+</script>
+</body>
+</html>
